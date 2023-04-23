@@ -170,7 +170,16 @@ class Mp3Notify
 };
 
 // Matrix Settings
-CRGB leds[256];
+#define Width 23
+#define Heigh 14
+#define LED_NUM Width*Heigh
+#define MaxBrithness 255
+#define MiniBrithness 155
+#define COLOR_ORDER RGB
+
+boolean testing = false;
+
+CRGB leds[LED_NUM];
 FastLED_NeoMatrix *matrix;
 
 static byte c1; // Last character buffer
@@ -927,7 +936,7 @@ void updateMatrix(byte payload[], int length)
 		}
 		case 13:
 		{
-			matrix->setBrightness(payload[1]);
+			matrix->setBrightness(MaxBrithness);
 			break;
 		}
 		case 14:
@@ -1228,7 +1237,7 @@ uint32_t Wheel(byte WheelPos, int pos)
 
 void flashProgress(unsigned int progress, unsigned int total)
 {
-	matrix->setBrightness(80);
+	matrix->setBrightness(MaxBrithness);
 	long num = 32 * 8 * progress / total;
 	for (unsigned char y = 0; y < 8; y++)
 	{
@@ -1325,95 +1334,99 @@ void setup()
 	}
 	Serial.println("matrixType");
 	Serial.println(matrixType);
+
+	if (testing)
+	{
+		/* code */
+		matrixType = 1;
+	}
+	
 	switch (matrixType)
 	{
 	case 0:
-		matrix = new FastLED_NeoMatrix(leds, 32, 8, NEO_MATRIX_TOP + NEO_MATRIX_LEFT + NEO_MATRIX_COLUMNS + NEO_MATRIX_ZIGZAG);
+		matrix = new FastLED_NeoMatrix(leds, Width, Heigh, NEO_MATRIX_TOP + NEO_MATRIX_RIGHT + NEO_MATRIX_ROWS + NEO_MATRIX_ZIGZAG);
 		break;
 	case 1:
-		matrix = new FastLED_NeoMatrix(leds, 8, 8, 4, 1, NEO_MATRIX_TOP + NEO_MATRIX_LEFT + NEO_MATRIX_ROWS + NEO_MATRIX_PROGRESSIVE);
-		break;
-	case 2:
-		matrix = new FastLED_NeoMatrix(leds, 32, 8, NEO_MATRIX_TOP + NEO_MATRIX_LEFT + NEO_MATRIX_ROWS + NEO_MATRIX_ZIGZAG);
+		matrix = new FastLED_NeoMatrix(leds, Width, Heigh, NEO_MATRIX_TOP + NEO_MATRIX_LEFT + NEO_MATRIX_COLUMNS + NEO_MATRIX_ZIGZAG);
 		break;
 	default:
-		matrix = new FastLED_NeoMatrix(leds, 32, 8, NEO_MATRIX_TOP + NEO_MATRIX_LEFT + NEO_MATRIX_COLUMNS + NEO_MATRIX_ZIGZAG);
+		matrix = new FastLED_NeoMatrix(leds, Width, Heigh, NEO_MATRIX_TOP + NEO_MATRIX_RIGHT + NEO_MATRIX_ROWS + NEO_MATRIX_ZIGZAG);
 		break;
 	}
 
 	switch (matrixTempCorrection)
 	{
 	case 0:
-		FastLED.addLeds<NEOPIXEL, D2>(leds, 256).setCorrection(TypicalLEDStrip);
+		FastLED.addLeds<WS2812B, D2, COLOR_ORDER>(leds, LED_NUM).setCorrection(TypicalLEDStrip);
 		break;
 	case 1:
-		FastLED.addLeds<NEOPIXEL, D2>(leds, 256).setTemperature(Candle);
+		FastLED.addLeds<NEOPIXEL, D2>(leds, LED_NUM).setTemperature(Candle);
 		break;
 	case 2:
-		FastLED.addLeds<NEOPIXEL, D2>(leds, 256).setTemperature(Tungsten40W);
+		FastLED.addLeds<NEOPIXEL, D2>(leds, LED_NUM).setTemperature(Tungsten40W);
 		break;
 	case 3:
-		FastLED.addLeds<NEOPIXEL, D2>(leds, 256).setTemperature(Tungsten100W);
+		FastLED.addLeds<NEOPIXEL, D2>(leds, LED_NUM).setTemperature(Tungsten100W);
 		break;
 	case 4:
-		FastLED.addLeds<NEOPIXEL, D2>(leds, 256).setTemperature(Halogen);
+		FastLED.addLeds<NEOPIXEL, D2>(leds, LED_NUM).setTemperature(Halogen);
 		break;
 	case 5:
-		FastLED.addLeds<NEOPIXEL, D2>(leds, 256).setTemperature(CarbonArc);
+		FastLED.addLeds<NEOPIXEL, D2>(leds, LED_NUM).setTemperature(CarbonArc);
 		break;
 	case 6:
-		FastLED.addLeds<NEOPIXEL, D2>(leds, 256).setTemperature(HighNoonSun);
+		FastLED.addLeds<NEOPIXEL, D2>(leds, LED_NUM).setTemperature(HighNoonSun);
 		break;
 	case 7:
-		FastLED.addLeds<NEOPIXEL, D2>(leds, 256).setTemperature(DirectSunlight);
+		FastLED.addLeds<NEOPIXEL, D2>(leds, LED_NUM).setTemperature(DirectSunlight);
 		break;
 	case 8:
-		FastLED.addLeds<NEOPIXEL, D2>(leds, 256).setTemperature(OvercastSky);
+		FastLED.addLeds<NEOPIXEL, D2>(leds, LED_NUM).setTemperature(OvercastSky);
 		break;
 	case 9:
-		FastLED.addLeds<NEOPIXEL, D2>(leds, 256).setTemperature(ClearBlueSky);
+		FastLED.addLeds<NEOPIXEL, D2>(leds, LED_NUM).setTemperature(ClearBlueSky);
 		break;
 	case 10:
-		FastLED.addLeds<NEOPIXEL, D2>(leds, 256).setTemperature(WarmFluorescent);
+		FastLED.addLeds<NEOPIXEL, D2>(leds, LED_NUM).setTemperature(WarmFluorescent);
 		break;
 	case 11:
-		FastLED.addLeds<NEOPIXEL, D2>(leds, 256).setTemperature(StandardFluorescent);
+		FastLED.addLeds<NEOPIXEL, D2>(leds, LED_NUM).setTemperature(StandardFluorescent);
 		break;
 	case 12:
-		FastLED.addLeds<NEOPIXEL, D2>(leds, 256).setTemperature(CoolWhiteFluorescent);
+		FastLED.addLeds<NEOPIXEL, D2>(leds, LED_NUM).setTemperature(CoolWhiteFluorescent);
 		break;
 	case 13:
-		FastLED.addLeds<NEOPIXEL, D2>(leds, 256).setTemperature(FullSpectrumFluorescent);
+		FastLED.addLeds<NEOPIXEL, D2>(leds, LED_NUM).setTemperature(FullSpectrumFluorescent);
 		break;
 	case 14:
-		FastLED.addLeds<NEOPIXEL, D2>(leds, 256).setTemperature(GrowLightFluorescent);
+		FastLED.addLeds<NEOPIXEL, D2>(leds, LED_NUM).setTemperature(GrowLightFluorescent);
 		break;
 	case 15:
-		FastLED.addLeds<NEOPIXEL, D2>(leds, 256).setTemperature(BlackLightFluorescent);
+		FastLED.addLeds<NEOPIXEL, D2>(leds, LED_NUM).setTemperature(BlackLightFluorescent);
 		break;
 	case 16:
-		FastLED.addLeds<NEOPIXEL, D2>(leds, 256).setTemperature(MercuryVapor);
+		FastLED.addLeds<NEOPIXEL, D2>(leds, LED_NUM).setTemperature(MercuryVapor);
 		break;
 	case 17:
-		FastLED.addLeds<NEOPIXEL, D2>(leds, 256).setTemperature(SodiumVapor);
+		FastLED.addLeds<NEOPIXEL, D2>(leds, LED_NUM).setTemperature(SodiumVapor);
 		break;
 	case 18:
-		FastLED.addLeds<NEOPIXEL, D2>(leds, 256).setTemperature(MetalHalide);
+		FastLED.addLeds<NEOPIXEL, D2>(leds, LED_NUM).setTemperature(MetalHalide);
 		break;
 	case 19:
-		FastLED.addLeds<NEOPIXEL, D2>(leds, 256).setTemperature(HighPressureSodium);
+		FastLED.addLeds<NEOPIXEL, D2>(leds, LED_NUM).setTemperature(HighPressureSodium);
 		break;
 	case 20:
-		FastLED.addLeds<NEOPIXEL, D2>(leds, 256).setTemperature(UncorrectedTemperature);
+		FastLED.addLeds<NEOPIXEL, D2>(leds, LED_NUM).setTemperature(UncorrectedTemperature);
 		break;
 	default:
-		FastLED.addLeds<NEOPIXEL, D2>(leds, 256).setCorrection(TypicalLEDStrip);
+		FastLED.addLeds<WS2812B, D2, COLOR_ORDER>(leds, LED_NUM).setCorrection(TypicalLEDStrip);
 		break;
 	}
 
 	matrix->begin();
 	matrix->setTextWrap(false);
-	matrix->setBrightness(30);
+	matrix->setBrightness(MaxBrithness);
 	matrix->setFont(&TomThumb);
 	//Reset with Tasters...
 	int zeit = millis();
