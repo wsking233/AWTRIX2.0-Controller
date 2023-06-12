@@ -170,7 +170,7 @@ class Mp3Notify
 };
 
 // Matrix Settings
-#define Width 23
+#define Width 30
 #define Heigh 14
 #define LED_NUM Width*Heigh
 #define MaxBrithness 255
