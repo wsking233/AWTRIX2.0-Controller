@@ -64,7 +64,7 @@ int matrixTempCorrection = 0;
 
 String version = "0.43";
 char awtrix_server[16] = "0.0.0.0";
-char Port[6] = "7001"; // AWTRIX Host Port, default = 7001
+char Port[6] = "7002"; // AWTRIX Host Port, default = 7001
 int matrixType = 0;
 
 IPAddress Server;
@@ -172,7 +172,7 @@ class Mp3Notify
 // Matrix Settings
 #define Width 30
 #define Heigh 14
-#define LED_NUM Width*Heigh
+#define LED_NUM 420
 #define MaxBrithness 255
 #define MiniBrithness 155
 #define COLOR_ORDER RGB
@@ -1344,13 +1344,13 @@ void setup()
 	switch (matrixType)
 	{
 	case 0:
-		matrix = new FastLED_NeoMatrix(leds, Width, Heigh, NEO_MATRIX_TOP + NEO_MATRIX_RIGHT + NEO_MATRIX_ROWS + NEO_MATRIX_ZIGZAG);
+		matrix = new FastLED_NeoMatrix(leds, Width, Heigh, NEO_MATRIX_TOP + NEO_MATRIX_LEFT + NEO_MATRIX_ROWS + NEO_MATRIX_ZIGZAG);
 		break;
 	case 1:
 		matrix = new FastLED_NeoMatrix(leds, Width, Heigh, NEO_MATRIX_TOP + NEO_MATRIX_LEFT + NEO_MATRIX_COLUMNS + NEO_MATRIX_ZIGZAG);
 		break;
 	default:
-		matrix = new FastLED_NeoMatrix(leds, Width, Heigh, NEO_MATRIX_TOP + NEO_MATRIX_RIGHT + NEO_MATRIX_ROWS + NEO_MATRIX_ZIGZAG);
+		matrix = new FastLED_NeoMatrix(leds, Width, Heigh, NEO_MATRIX_TOP + NEO_MATRIX_LEFT + NEO_MATRIX_ROWS + NEO_MATRIX_ZIGZAG);
 		break;
 	}
 
@@ -1432,6 +1432,15 @@ void setup()
 	int zeit = millis();
 	int zahl = 5;
 	int zahlAlt = 6;
+	matrix->clear();
+	
+	matrix->fillRect(0,0,Width,Heigh,matrix->Color(255,0,0));
+	delay(2000);
+	matrix->fillRect(0,0,Width,Heigh,matrix->Color(0,255,0));
+	delay(2000);
+	matrix->fillRect(0,0,Width,Heigh,matrix->Color(0,0,255));
+	delay(2000);
+
 	matrix->clear();
 	matrix->setTextColor(matrix->Color(255, 0, 255));
 	matrix->setCursor(9, 6);
