@@ -1472,6 +1472,32 @@ void setup()
 	int zahl = 5;
 	int zahlAlt = 6;
 	matrix->clear();
+
+	/*
+		starting test animation
+	*/
+	//set full screen to red
+	matrix->fillScreen(matrix->Color(255, 0, 0));
+	matrix->show();
+	delay(1000);
+	matrix->clear();
+	//set full screen to green
+	matrix->fillScreen(matrix->Color(0, 255, 0));
+	matrix->show();
+	delay(1000);
+	matrix->clear();
+	//set full screen to blue
+	matrix->fillScreen(matrix->Color(0, 0, 255));
+	matrix->show();
+	delay(1000);
+	matrix->clear();
+	//set full screen to white
+	matrix->fillScreen(matrix->Color(255, 255, 255));
+	matrix->show();
+	delay(1000);
+	matrix->clear();
+
+
 	matrix->setTextColor(matrix->Color(255, 0, 255));
 	matrix->setCursor(9, 6);
 	matrix->print("BOOT");
