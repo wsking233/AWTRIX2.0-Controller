@@ -64,7 +64,7 @@ int matrixTempCorrection = 0;
 
 String version = "0.43";
 char awtrix_server[16] = "0.0.0.0";
-char Port[6] = "7002"; // AWTRIX Host Port, default = 7001
+char Port[6] = "7001"; // AWTRIX Host Port, default = 7001
 int matrixType = 0;
 
 IPAddress Server;
