@@ -1269,9 +1269,28 @@ void configModeCallback(WiFiManager *myWiFiManager)
 	matrix->show();
 }
 
+//reset the wifi if a button has been pressed 
+void resetWifi()
+{
+	if (digitalRead(D3) == LOW)
+	{
+		if (!USBConnection)
+		{
+			Serial.println("Reset Wifi");
+		}
+		wifiManager.resetSettings();
+		ESP.reset();
+	}
+}
+
+
+
 void setup()
 {
 	delay(2000);
+
+	pinMode(D3, INPUT_PULLUP);
+	
 
 	for (int i = 0; i < tasterCount; i++)
 	{
